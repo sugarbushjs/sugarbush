@@ -1,28 +1,35 @@
 {
   "root": true,
   "extends": [
+    "prettier",
+    "plugin:prettier/recommended",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "plugin:prettier/recommended"
+    "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
+    "prettier",
     "react",
-    "react-hooks",
-    "prettier"
+    "react-hooks"
   ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "semi": [2, "never"]
+    "@typescript-eslint/no-explicit-any": "off"
   },
+  "overrides": [
+    {
+      "files": ["*.js","*.ts",".jsx",".tsx"],
+      "rules": {
+        "semi": [1, "never"]
+      }
+    }
+  ],
   "settings": {
     "react": {
       "version": "detect"

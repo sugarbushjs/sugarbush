@@ -1,5 +1,5 @@
-import { Dispatch, ReducersMapObject } from 'redux';
-export const SAGA_EXTERMINATOR = '@@sb-saga!';
+import { Dispatch, ReducersMapObject } from 'redux'
+export const SAGA_EXTERMINATOR = '@@sb-saga!'
 
 /**
  * @template store of type redux Store
@@ -7,10 +7,10 @@ export const SAGA_EXTERMINATOR = '@@sb-saga!';
  * @description An interface for configureAdaptiveStore
  * */
 export interface IAdpStoreOptions<D extends Dispatch> {
-  dispatch: D;
+  dispatch: D
 }
 
 export interface ISwitchback {
-  R: ReducersMapObject;
-  V?: boolean;
+  R: ReducersMapObject
+  V?: boolean
 }

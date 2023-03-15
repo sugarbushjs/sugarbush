@@ -1,7 +1,7 @@
-import { AnyAction, Dispatch } from 'redux';
-import { IAdpStoreOptions, SAGA_EXTERMINATOR } from "../types/storeTypes";
+import { AnyAction, Dispatch } from 'redux'
+import { IAdpStoreOptions, SAGA_EXTERMINATOR } from '../types/storeTypes'
 // @ts-ignore
-const emoji = String.fromCodePoint("0X1F3C2");
+const emoji = String.fromCodePoint('0X1F3C2')
 
 /**
  *
@@ -13,9 +13,7 @@ const emoji = String.fromCodePoint("0X1F3C2");
  * @param { Store } store
  * @param { boolean } suppressWarnings
  */
-export function configureAdaptiveStore<D extends Dispatch>(
-  options: IAdpStoreOptions<D>
-) {
+export function configureAdaptiveStore<D extends Dispatch>(options: IAdpStoreOptions<D>) {
   const { dispatch: _dispatch } = options || {}
 
   const dispatch = (key: string) => {
@@ -24,12 +22,10 @@ export function configureAdaptiveStore<D extends Dispatch>(
       try {
         _dispatch(_a)
       } catch (e) {
-        throw new Error(
-          `${emoji} Error dispatching from createAdaptive: KEY= ${key}: Error => ${e}`
-        )
+        throw new Error(`${emoji} Error dispatching from createAdaptive: KEY= ${key}: Error => ${e}`)
       }
     }
-  };
+  }
 
   const dispatchSaga = () => {
     return function _bravo(action: AnyAction) {
@@ -37,12 +33,10 @@ export function configureAdaptiveStore<D extends Dispatch>(
       try {
         _dispatch(_a)
       } catch (e) {
-        throw new Error(
-          `${emoji} Error dispatching Saga from createAdaptive: Error => ${e}`
-        )
+        throw new Error(`${emoji} Error dispatching Saga from createAdaptive: Error => ${e}`)
       }
     }
-  };
+  }
 
   return {
     dispatch,
