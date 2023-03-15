@@ -1,4 +1,4 @@
-import { Dispatch } from 'redux'
+import { Dispatch } from 'redux';
 
 /**
  * @template dispatch of type redux Dispatch
@@ -12,7 +12,7 @@ export interface IAdpDispatchOptions<
 > {
   dispatch: D;
   key?: K;
-  verbose?: V
+  verbose?: V;
 }
 
 /**
@@ -21,8 +21,8 @@ export interface IAdpDispatchOptions<
  */
 export interface IAdpSagaDispatchOptions<
   D extends Dispatch,
-  V extends boolean,
+  V extends boolean
 > {
   dispatch: D;
-  verbose?: V
+  verbose?: V;
 }

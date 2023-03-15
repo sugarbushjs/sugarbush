@@ -8,7 +8,7 @@ describe("switchback", () => {
 
     const s = switchback({
       SystemState,
-    });
+    })
 
     const nextState = s(_state, {
       type: "FETCH_SYSTEM_THEME",
@@ -45,5 +45,5 @@ describe("switchback", () => {
       payload: "dark",
     });
     expect(nextState.SystemState.theme).toEqual("dark");
-  });
+  })
 });

@@ -1,4 +1,4 @@
-import { AnyAction, Dispatch } from 'redux'
+import { AnyAction, Dispatch } from 'redux';
 import { IAdpStoreOptions, SAGA_EXTERMINATOR } from "../types/storeTypes";
 // @ts-ignore
 const emoji = String.fromCodePoint("0X1F3C2");
@@ -13,39 +13,39 @@ const emoji = String.fromCodePoint("0X1F3C2");
  * @param { Store } store
  * @param { boolean } suppressWarnings
  */
-export function configureAdaptiveStore<
-  D extends Dispatch
->(options: IAdpStoreOptions<D>) {
-  let { dispatch: _dispatch } = options || {};
+export function configureAdaptiveStore<D extends Dispatch>(
+  options: IAdpStoreOptions<D>
+) {
+  const { dispatch: _dispatch } = options || {}
 
-  const dispatch = (key:string) => {
+  const dispatch = (key: string) => {
     return function _hammerHead(action: AnyAction) {
-      const _a = { ...action, key };
+      const _a = { ...action, key }
       try {
-        _dispatch(_a);
+        _dispatch(_a)
       } catch (e) {
         throw new Error(
           `${emoji} Error dispatching from createAdaptive: KEY= ${key}: Error => ${e}`
-        );
+        )
       }
-    };
-  }
+    }
+  };
 
   const dispatchSaga = () => {
     return function _bravo(action: AnyAction) {
-      const _a = { ...action, key: SAGA_EXTERMINATOR };
+      const _a = { ...action, key: SAGA_EXTERMINATOR }
       try {
-        _dispatch(_a);
+        _dispatch(_a)
       } catch (e) {
         throw new Error(
           `${emoji} Error dispatching Saga from createAdaptive: Error => ${e}`
-        );
+        )
       }
-    };
-  }
+    }
+  };
 
   return {
     dispatch,
     dispatchSaga,
-  };
+  }
 }

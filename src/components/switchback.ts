@@ -1,9 +1,13 @@
-import { produce } from 'immer'
-import { ReducersMapObject, StateFromReducersMapObject, AnyAction } from 'redux'
-import { SAGA_EXTERMINATOR } from '../types/storeTypes'
+import { produce } from "immer"
+import {
+  ReducersMapObject,
+  StateFromReducersMapObject,
+  AnyAction,
+} from "redux"
+import { SAGA_EXTERMINATOR } from "../types/storeTypes"
 
 // @ts-ignore
-const emoji = String.fromCodePoint("0x26F7");
+const emoji = String.fromCodePoint("0x26F7")
 
 /**
  * @description: Switchback will call only one child reducer if a key is included
@@ -27,17 +31,20 @@ const emoji = String.fromCodePoint("0x26F7");
  * @returns State object representing the reducers
  *
  * */
-export function switchback(reducers: ReducersMapObject, verbose: boolean = true) {
-  const reducerKeys = Object.keys(reducers);
-  const loggingOn = verbose && process.env.NODE_ENV !== 'production'
+export function switchback(reducers: ReducersMapObject, verbose = true) {
+  const reducerKeys = Object.keys(reducers)
+  const loggingOn = verbose && process.env.NODE_ENV !== "production"
 
-  return function _lowerFIS(state: StateFromReducersMapObject<typeof reducers> = {}, action: AnyAction):any {
-    let nextState: StateFromReducersMapObject<typeof reducers> = {};
-    const id = action?.key || undefined;
-    let runReduxCombined = false;
+  return function _lowerFIS(
+    state: StateFromReducersMapObject<typeof reducers> = {},
+    action: AnyAction
+  ): any {
+    let nextState: StateFromReducersMapObject<typeof reducers> = {}
+    const id = action?.key || undefined
+    let runReduxCombined = false
 
     /** Build state tree */
-    if(!state) {
+    if (!state) {
       nextState = _buildStateTree(reducers, reducerKeys, action)
 
       if (!nextState) {
@@ -48,11 +55,11 @@ export function switchback(reducers: ReducersMapObject, verbose: boolean = true)
 
     if (id) {
       if (loggingOn) {
-        console.log(`${emoji} running switchback: ${action.type}`);
+        console.log(`${emoji} running switchback: ${action.type}`)
       }
 
       try {
-        nextState = { ...state };
+        nextState = { ...state }
         /**
          * If the dispatched saga does NOT have associated reducer
          * then just return the current store state - this comes
@@ -61,45 +68,49 @@ export function switchback(reducers: ReducersMapObject, verbose: boolean = true)
          *  */
         if (id === SAGA_EXTERMINATOR) {
           if (loggingOn) {
-            console.log(`${emoji} SAGA Escape Hatch!!! ${action.type}`);
+            console.log(`${emoji} SAGA Escape Hatch!!! ${action.type}`)
           }
           return nextState
         }
 
-        const reducer = reducers[id];
+        const reducer = reducers[id]
 
         if (reducer) {
-          nextState = produce(state, (draftState:any) => {
+          nextState = produce(state, (draftState: any) => {
             const nState = draftState
-            const previousStateForKey = state[id];
-            const newState = reducer(previousStateForKey, action);
-            _isStateValid(newState, action, id);
+            const previousStateForKey = state[id]
+            const newState = reducer(previousStateForKey, action)
+            _isStateValid(newState, action, id)
             nState[id] = newState
-          })
+          });
         } else {
-          if(loggingOn) {
-            console.log(`${emoji} switchback: key does not exists. Continuing with combinedReducer logic`);
+          if (loggingOn) {
+            console.log(
+              `${emoji} switchback: key does not exists. Continuing with combinedReducer logic`
+            )
           }
-          runReduxCombined = true;
+          runReduxCombined = true
         }
       } catch (e: any) {
-        const message = `key = ${id} => Error: ${e.message || ""}`;
-        throw new Error(`${emoji} Error within switchback: ${message} `);
+        const message = `key = ${id} => Error: ${e.message || ""}`
+        throw new Error(`${emoji} Error within switchback: ${message} `)
       }
 
-      if (!runReduxCombined) return nextState;
+      if (!runReduxCombined) return nextState
     }
 
     if (loggingOn) {
-      console.log(`${emoji} => running combinedReducer logic `);
+      console.log(`${emoji} => running combinedReducer logic `)
     }
 
     for (let i = 0; i < reducerKeys.length; i++) {
-      const key = reducerKeys[i];
-      const reducer = reducers[key];
+      const key = reducerKeys[i]
+      const reducer = reducers[key]
 
-      if(!reducer) {
-        throw new Error(`Error combinedReducer logic - reducer does not exist ${key}`)
+      if (!reducer) {
+        throw new Error(
+          `Error combinedReducer logic - reducer does not exist ${key}`
+        )
       }
 
       const previousStateForKey = state[key];
@@ -108,7 +119,7 @@ export function switchback(reducers: ReducersMapObject, verbose: boolean = true)
       nextState[key] = nextStateForKey;
     }
     return nextState;
-  };
+  }
 }
 
 const _isStateValid = (nextStateForKey: any, action: any, key: string) => {
@@ -118,29 +129,35 @@ const _isStateValid = (nextStateForKey: any, action: any, key: string) => {
       `${emoji} When called with an action of type ${
         actionType ? `"${String(actionType)}"` : "(unknown type)"
       }, the slice reducer for key "${key}" returned undefined. ` +
-      `To ignore an action, you must explicitly return the previous state. ` +
-      `If you want this reducer to hold no value, make sure you reducers has initial state` +
-      `to represent the return type. For exp, if set to null use {} instead is returning an object.`
+        `To ignore an action, you must explicitly return the previous state. ` +
+        `If you want this reducer to hold no value, make sure you reducers has initial state` +
+        `to represent the return type. For exp, if set to null use {} instead is returning an object.`
     );
   }
 
   return nextStateForKey;
-};
+}
 
-const _buildStateTree = (reducers: ReducersMapObject, reducerKeys: any, action: AnyAction) => {
+const _buildStateTree = (
+  reducers: ReducersMapObject,
+  reducerKeys: any,
+  action: AnyAction
+) => {
   const nextState: any = {}
-  debugger
+
   //Build state tree
   for (let i = 0; i < reducerKeys.length; i++) {
     const key = reducerKeys[i];
     const reducer = reducers[key];
 
     if (!reducer) {
-      throw new Error(`Error combinedReducer logic - reducer does not exist ${key}`)
+      throw new Error(
+        `Error combinedReducer logic - reducer does not exist ${key}`
+      )
     }
 
     const nextStateForKey = reducer({}, action);
     nextState[key] = nextStateForKey;
   }
   return nextState
-}
+};
