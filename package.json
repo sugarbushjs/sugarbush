@@ -1,7 +1,7 @@
 {
   "name": "sugarbush",
   "author": "Steven Wickers <StevenWickers@gmail.com> (https://www.linkedin.com/in/stevenwickers)",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Sugarbush is a performance enhancer for your react-redux application by replacing the Redux combinedReducers.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -59,6 +59,7 @@
     "react-native": ">=0.59",
     "redux": "^4"
   },
+  "nodemonConfig": false,
   "peerDependenciesMeta": {
     "@types/react": {
       "optional": true
@@ -78,6 +79,7 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.21.0",
     "@jest/globals": "^29.5.0",
+    "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.4.0",
@@ -98,11 +100,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
+    "redux-saga": "^1.2.2",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
-    "typescript": "^4.9.5",
-    "@reduxjs/toolkit": "^1.9.3",
-    "redux-saga": "^1.2.2"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "redux": "^4.2.1"
