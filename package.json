@@ -59,7 +59,6 @@
     "react-native": ">=0.59",
     "redux": "^4"
   },
-  "nodemonConfig": false,
   "peerDependenciesMeta": {
     "@types/react": {
       "optional": true
