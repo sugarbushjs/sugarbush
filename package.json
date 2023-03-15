@@ -54,11 +54,12 @@
   "peerDependencies": {
     "@types/react": "^16.8 || ^17.0 || ^18.0",
     "@types/react-dom": "^16.8 || ^17.0 || ^18.0",
+    "@types/redux-saga": "^0.10.5",
+    "redux-saga": "^1.2.2",
     "react": "^16.8 || ^17.0 || ^18.0",
     "react-dom": "^16.8 || ^17.0 || ^18.0",
     "react-native": ">=0.59",
-    "redux": "^4",
-    "redux-saga": "^1.2.2"
+    "redux": "^4"
   },
   "peerDependenciesMeta": {
     "@types/react": {
