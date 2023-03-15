@@ -1,3 +1,5 @@
+import { produce } from 'immer'
+import { ReducersMapObject, StateFromReducersMapObject, AnyAction } from 'redux'
 import { SAGA_EXTERMINATOR } from '../types/storeTypes'
 
 // @ts-ignore
@@ -19,17 +21,30 @@ const emoji = String.fromCodePoint("0x26F7");
  *   initial state if the state passed to them was undefined, and the current
  *   state for any unrecognized action. (official redux documentation)
  *
+ * @param verbose is optional. This will output information to the
+ *  console window. This is turned off in production env.
+ *
  * @returns State object representing the reducers
- *  
+ *
  * */
-export function switchback(reducers: any) {
+export function switchback(reducers: ReducersMapObject, verbose: boolean = true) {
   const reducerKeys = Object.keys(reducers);
-  const loggingOn = process.env.NODE_ENV !== 'production'
+  const loggingOn = verbose && process.env.NODE_ENV !== 'production'
 
-  return function _lowerFIS(state: any = {}, action: any):any {
-    let nextState: any = {};
+  return function _lowerFIS(state: StateFromReducersMapObject<typeof reducers> = {}, action: AnyAction):any {
+    let nextState: StateFromReducersMapObject<typeof reducers> = {};
     const id = action?.key || undefined;
     let runReduxCombined = false;
+
+    /** Build state tree */
+    if(!state) {
+      nextState = _buildStateTree(reducers, reducerKeys, action)
+
+      if (!nextState) {
+        throw new Error(`${emoji} switchback: error with null state`)
+      }
+      return nextState
+    }
 
     if (id) {
       if (loggingOn) {
@@ -54,8 +69,13 @@ export function switchback(reducers: any) {
         const reducer = reducers[id];
 
         if (reducer) {
-          const previousStateForKey = state[id];
-          nextState[id] = reducer(previousStateForKey, action);
+          nextState = produce(state, (draftState:any) => {
+            const nState = draftState
+            const previousStateForKey = state[id];
+            const newState = reducer(previousStateForKey, action);
+            _isStateValid(newState, action, id);
+            nState[id] = newState
+          })
         } else {
           if(loggingOn) {
             console.log(`${emoji} switchback: key does not exists. Continuing with combinedReducer logic`);
@@ -77,11 +97,14 @@ export function switchback(reducers: any) {
     for (let i = 0; i < reducerKeys.length; i++) {
       const key = reducerKeys[i];
       const reducer = reducers[key];
-      const previousStateForKey = state[key];
 
+      if(!reducer) {
+        throw new Error(`Error combinedReducer logic - reducer does not exist ${key}`)
+      }
+
+      const previousStateForKey = state[key];
       const nextStateForKey = reducer(previousStateForKey, action);
       _isStateValid(nextStateForKey, action, key);
-
       nextState[key] = nextStateForKey;
     }
     return nextState;
@@ -95,10 +118,29 @@ const _isStateValid = (nextStateForKey: any, action: any, key: string) => {
       `${emoji} When called with an action of type ${
         actionType ? `"${String(actionType)}"` : "(unknown type)"
       }, the slice reducer for key "${key}" returned undefined. ` +
-        `To ignore an action, you must explicitly return the previous state. ` +
-        `If you want this reducer to hold no value, you can return null instead of undefined.`
+      `To ignore an action, you must explicitly return the previous state. ` +
+      `If you want this reducer to hold no value, make sure you reducers has initial state` +
+      `to represent the return type. For exp, if set to null use {} instead is returning an object.`
     );
   }
 
   return nextStateForKey;
 };
+
+const _buildStateTree = (reducers: ReducersMapObject, reducerKeys: any, action: AnyAction) => {
+  const nextState: any = {}
+  debugger
+  //Build state tree
+  for (let i = 0; i < reducerKeys.length; i++) {
+    const key = reducerKeys[i];
+    const reducer = reducers[key];
+
+    if (!reducer) {
+      throw new Error(`Error combinedReducer logic - reducer does not exist ${key}`)
+    }
+
+    const nextStateForKey = reducer({}, action);
+    nextState[key] = nextStateForKey;
+  }
+  return nextState
+}

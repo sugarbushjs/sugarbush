@@ -8,11 +8,11 @@ import { Dispatch } from 'redux'
 export interface IAdpDispatchOptions<
   D extends Dispatch,
   K extends string | undefined,
-  W extends boolean
+  V extends boolean
 > {
   dispatch: D;
   key?: K;
-  suppressLogging?: W
+  verbose?: V
 }
 
 /**
@@ -21,6 +21,8 @@ export interface IAdpDispatchOptions<
  */
 export interface IAdpSagaDispatchOptions<
   D extends Dispatch,
+  V extends boolean,
 > {
   dispatch: D;
+  verbose?: V
 }

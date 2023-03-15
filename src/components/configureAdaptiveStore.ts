@@ -14,19 +14,15 @@ const emoji = String.fromCodePoint("0X1F3C2");
  * @param { boolean } suppressWarnings
  */
 export function configureAdaptiveStore<
-  D extends Dispatch,
-  W extends boolean
->(options: IAdpStoreOptions<D,W>) {
-  let { dispatch: dispt, suppressWarnings = false } = options || {};
-
-  if (!suppressWarnings && process.env.NODE_ENV !== "production")
-    console.log(`${emoji} Initializing Adaptive Store`);
+  D extends Dispatch
+>(options: IAdpStoreOptions<D>) {
+  let { dispatch: _dispatch } = options || {};
 
   const dispatch = (key:string) => {
     return function _hammerHead(action: AnyAction) {
       const _a = { ...action, key };
       try {
-        dispt(_a);
+        _dispatch(_a);
       } catch (e) {
         throw new Error(
           `${emoji} Error dispatching from createAdaptive: KEY= ${key}: Error => ${e}`
@@ -39,7 +35,7 @@ export function configureAdaptiveStore<
     return function _bravo(action: AnyAction) {
       const _a = { ...action, key: SAGA_EXTERMINATOR };
       try {
-        dispt(_a);
+        _dispatch(_a);
       } catch (e) {
         throw new Error(
           `${emoji} Error dispatching Saga from createAdaptive: Error => ${e}`

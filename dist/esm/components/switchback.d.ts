@@ -1,3 +1,4 @@
+import { ReducersMapObject, AnyAction } from 'redux';
 /**
  * @description: Switchback will call only one child reducer if a key is included
  * in the action: ({type:'SET_THEME', payload:'GEEN', key: 'SystemState'}) and
@@ -14,7 +15,12 @@
  *   initial state if the state passed to them was undefined, and the current
  *   state for any unrecognized action. (official redux documentation)
  *
+ * @param verbose is optional. This will output information to the
+ *  console window. This is turned off in production env.
+ *
  * @returns State object representing the reducers
  *
  * */
-export declare function switchback(reducers: any): (state: any, action: any) => any;
+export declare function switchback(reducers: ReducersMapObject, verbose?: boolean): (state: {
+    [x: string]: any;
+} | undefined, action: AnyAction) => any;

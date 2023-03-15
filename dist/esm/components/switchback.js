@@ -1,4 +1,5 @@
 import { __assign } from "tslib";
+import { produce } from 'immer';
 import { SAGA_EXTERMINATOR } from '../types/storeTypes';
 // @ts-ignore
 var emoji = String.fromCodePoint("0x26F7");
@@ -18,17 +19,29 @@ var emoji = String.fromCodePoint("0x26F7");
  *   initial state if the state passed to them was undefined, and the current
  *   state for any unrecognized action. (official redux documentation)
  *
+ * @param verbose is optional. This will output information to the
+ *  console window. This is turned off in production env.
+ *
  * @returns State object representing the reducers
  *
  * */
-export function switchback(reducers) {
+export function switchback(reducers, verbose) {
+    if (verbose === void 0) { verbose = true; }
     var reducerKeys = Object.keys(reducers);
-    var loggingOn = process.env.NODE_ENV !== 'production';
+    var loggingOn = verbose && process.env.NODE_ENV !== 'production';
     return function _lowerFIS(state, action) {
         if (state === void 0) { state = {}; }
         var nextState = {};
         var id = (action === null || action === void 0 ? void 0 : action.key) || undefined;
         var runReduxCombined = false;
+        /** Build state tree */
+        if (!state) {
+            nextState = _buildStateTree(reducers, reducerKeys, action);
+            if (!nextState) {
+                throw new Error("".concat(emoji, " switchback: error with null state"));
+            }
+            return nextState;
+        }
         if (id) {
             if (loggingOn) {
                 console.log("".concat(emoji, " running switchback: ").concat(action.type));
@@ -47,10 +60,15 @@ export function switchback(reducers) {
                     }
                     return nextState;
                 }
-                var reducer = reducers[id];
-                if (reducer) {
-                    var previousStateForKey = state[id];
-                    nextState[id] = reducer(previousStateForKey, action);
+                var reducer_1 = reducers[id];
+                if (reducer_1) {
+                    nextState = produce(state, function (draftState) {
+                        var nState = draftState;
+                        var previousStateForKey = state[id];
+                        var newState = reducer_1(previousStateForKey, action);
+                        _isStateValid(newState, action, id);
+                        nState[id] = newState;
+                    });
                 }
                 else {
                     if (loggingOn) {
@@ -72,6 +90,9 @@ export function switchback(reducers) {
         for (var i = 0; i < reducerKeys.length; i++) {
             var key = reducerKeys[i];
             var reducer = reducers[key];
+            if (!reducer) {
+                throw new Error("Error combinedReducer logic - reducer does not exist ".concat(key));
+            }
             var previousStateForKey = state[key];
             var nextStateForKey = reducer(previousStateForKey, action);
             _isStateValid(nextStateForKey, action, key);
@@ -85,8 +106,24 @@ var _isStateValid = function (nextStateForKey, action, key) {
         var actionType = action && action.type;
         throw new Error("".concat(emoji, " When called with an action of type ").concat(actionType ? "\"".concat(String(actionType), "\"") : "(unknown type)", ", the slice reducer for key \"").concat(key, "\" returned undefined. ") +
             "To ignore an action, you must explicitly return the previous state. " +
-            "If you want this reducer to hold no value, you can return null instead of undefined.");
+            "If you want this reducer to hold no value, make sure you reducers has initial state" +
+            "to represent the return type. For exp, if set to null use {} instead is returning an object.");
     }
     return nextStateForKey;
+};
+var _buildStateTree = function (reducers, reducerKeys, action) {
+    var nextState = {};
+    debugger;
+    //Build state tree
+    for (var i = 0; i < reducerKeys.length; i++) {
+        var key = reducerKeys[i];
+        var reducer = reducers[key];
+        if (!reducer) {
+            throw new Error("Error combinedReducer logic - reducer does not exist ".concat(key));
+        }
+        var nextStateForKey = reducer({}, action);
+        nextState[key] = nextStateForKey;
+    }
+    return nextState;
 };
 //# sourceMappingURL=switchback.js.map

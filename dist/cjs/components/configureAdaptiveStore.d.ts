@@ -10,7 +10,7 @@ import { IAdpStoreOptions } from "../types/storeTypes";
  * @param { Store } store
  * @param { boolean } suppressWarnings
  */
-export declare function configureAdaptiveStore<D extends Dispatch, W extends boolean>(options: IAdpStoreOptions<D, W>): {
+export declare function configureAdaptiveStore<D extends Dispatch>(options: IAdpStoreOptions<D>): {
     dispatch: (key: string) => (action: AnyAction) => void;
     dispatchSaga: () => (action: AnyAction) => void;
 };
