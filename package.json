@@ -1,7 +1,7 @@
 {
   "name": "sugarbush",
   "author": "Steven Wickers <StevenWickers@gmail.com> (https://www.linkedin.com/in/stevenwickers)",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "Sugarbush is a performance enhancer for your react-redux application by replacing the Redux combinedReducers.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -12,7 +12,7 @@
     "prepublishOnly": "npm test && npm run prettier && npm run lint",
     "lint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
     "prettier": "prettier --write \"{src,tests,example/src}/**/*.{js,ts,jsx,tsx}\"",
-    "test": "jest --config jestconfig.json",
+    "test": "jest",
     "coverage": "jest --coverage"
   },
   "keywords": [
