@@ -1,5 +1,5 @@
 {
-  "include": ["src", "tests"],
+  "include": ["src"],
   "exclude": [
     "dist",
     "node_modules"
@@ -16,7 +16,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "moduleResolution": "node",
-    "jsx": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,

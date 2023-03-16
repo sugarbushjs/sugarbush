@@ -2,7 +2,6 @@ import babel from '@rollup/plugin-babel'
 import replace from '@rollup/plugin-replace'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import resolve from '@rollup/plugin-node-resolve';
-import external from 'rollup-plugin-peer-deps-external';
 import typescript from 'rollup-plugin-typescript2';
 
 export default {
@@ -27,7 +26,6 @@ export default {
       tsconfig: "tsconfig.json",
       tsconfigOverride: true
     }),
-    external(),
     replace({
       'process.env.NODE_ENV': JSON.stringify('development'),
       preventAssignment: true,
