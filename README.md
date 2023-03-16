@@ -6,7 +6,12 @@
 **Sugarbush** is a performance enhancer for your react-redux application by replacing the Redux
 <u>combinedReducers</u> with `switchback`. Switchback will only run the corresponding reducer that matches
 the dispatched action type. Sugarbush also has accompanied components such as
-`confingureAdaptiveStrore`, `adaptiveDispatch`, `adaptiveSagaDispatch` and `sbPut` (saga effect)
+`confingureAdaptiveStrore`, and `adaptiveDispatch`.
+
+\
+**Sugarbush Saga** includes `adaptiveSagaDispatch` and `sbPut` (saga effect). For more information goto
+[sugarbush-saga](https://github.com/sugarbushjs/sugarbush-saga)
+
 
 
 ## Installation
@@ -115,8 +120,8 @@ export default App
 > **Note**: The store only takes one parameter of type dispatch.
 
 \
-The `configureAdaptiveStore` contains two methods, **dispatch**, and **dispatchSaga**. Please read the **Saga** section  
-in this document for more information about dispatchSaga.
+The `configureAdaptiveStore` contains two methods, **dispatch**, and **dispatchSaga**. Please read more about
+[sugarbush-saga](https://github.com/sugarbushjs/sugarbush-saga)
 
 \
 The dispatch method will create a new dispatch with a key. `Switchback` will use the key to process the
