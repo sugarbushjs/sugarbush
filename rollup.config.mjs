@@ -1,17 +1,33 @@
 import babel from '@rollup/plugin-babel'
 import replace from '@rollup/plugin-replace'
-import typescript from '@rollup/plugin-typescript'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import resolve from '@rollup/plugin-node-resolve';
+import external from 'rollup-plugin-peer-deps-external';
+import typescript from 'rollup-plugin-typescript2';
+
 export default {
   input: 'src/index.ts',
-  output: {
-    file: 'dist/bundle.js',
-    format: 'cjs',
-    sourcemap: false,
-  },
+  output: [
+    {
+      dir: "dist/esm",
+      format: "esm",
+      name: 'sugarbush',
+      sourcemap: true,
+    },
+    {
+      dir: "dist/cjs",
+      format: "cjs",
+      exports: "named",
+      sourcemap: true,
+    },
+  ],
   plugins: [
-    typescript({ compilerOptions: {lib: ["es5", "es6", "dom"], target: "es5"}}),
+    typescript({
+      tsconfigDefaults: true,
+      tsconfig: "tsconfig.json",
+      tsconfigOverride: true
+    }),
+    external(),
     replace({
       'process.env.NODE_ENV': JSON.stringify('development'),
       preventAssignment: true,
@@ -20,7 +36,6 @@ export default {
       presets: ['@babel/preset-react'],
       babelHelpers: 'bundled'
     }),
-    typescript(),
     nodeResolve(),
     resolve()
   ],
