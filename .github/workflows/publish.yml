@@ -20,17 +20,5 @@ jobs:
       - name: publish
         run: npm publish --access public
 
-      - name: Install dependencies
-        run: yarn && yarn install
-
-      - name: Install jest
-        run: yarn add jest jest-environment-jsdom
-
-      - name: Build
-        run: yarn build
-
-      - name: Publish
-        run: yarn publish
-
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_SUGARBUSH_TOKEN }}
