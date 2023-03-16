@@ -17,6 +17,10 @@ jobs:
         with:
           node-version: 19
           registry-url: https://registry.npmjs.org/
+      - name: Install modules
+        run: yarn
+      - name: Run tests
+        run: yarn test
       - name: publish
         run: npm publish --access public
 
