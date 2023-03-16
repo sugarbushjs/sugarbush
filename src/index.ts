@@ -11,5 +11,5 @@ export {
   configureAdaptiveStore,
   IAdpDispatchOptions,
   IAdpStoreOptions,
-  SAGA_EXTERMINATOR as sagaExterminator,
+  SAGA_EXTERMINATOR,
 }
