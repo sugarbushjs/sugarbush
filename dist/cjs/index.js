@@ -27,37 +27,16 @@ var __assign = function() {
 };
 
 // @ts-ignore
-var emoji$3 = String.fromCodePoint('0X1F6A1');
+var emoji$2 = String.fromCodePoint('0X1F6A1');
 function adaptiveDispatch(options) {
     var _a = options || {}, _dispatch = _a.dispatch, _key = _a.key, _b = _a.verbose, _verbose = _b === void 0 ? true : _b;
     var loggingOn = _verbose && "development" !== 'production';
     return function _fis(action) {
         try {
             if (loggingOn) {
-                console.log("".concat(emoji$3, " adaptiveDispatch: ").concat(_key));
+                console.log("".concat(emoji$2, " adaptiveDispatch: ").concat(_key));
             }
             var _action = __assign(__assign({}, action), { key: _key });
-            _dispatch(_action);
-        }
-        catch (e) {
-            console.error("".concat(emoji$3, " error in AdaptiveDispatch: ").concat(e));
-        }
-    };
-}
-
-var SAGA_EXTERMINATOR = '@@sb-saga!';
-
-// @ts-ignore
-var emoji$2 = String.fromCodePoint('0X1F6A1');
-function adaptiveSagaDispatch(options) {
-    var _a = options || {}, _dispatch = _a.dispatch, _b = _a.verbose, _verbose = _b === void 0 ? true : _b;
-    var loggingOn = _verbose && "development" !== 'production';
-    return function _fis(action) {
-        try {
-            if (loggingOn) {
-                console.log("".concat(emoji$2, " adaptiveSagaDispatch"));
-            }
-            var _action = __assign(__assign({}, action), { key: SAGA_EXTERMINATOR });
             _dispatch(_action);
         }
         catch (e) {
@@ -515,6 +494,8 @@ var un = function () {
   an.createDraft.bind(an);
   an.finishDraft.bind(an);
 
+var SAGA_EXTERMINATOR = '@@sb-saga!';
+
 // @ts-ignore
 var emoji$1 = String.fromCodePoint('0x26F7');
 /**
@@ -683,7 +664,6 @@ function configureAdaptiveStore(options) {
 }
 
 exports.adaptiveDispatch = adaptiveDispatch;
-exports.adaptiveSagaDispatch = adaptiveSagaDispatch;
 exports.configureAdaptiveStore = configureAdaptiveStore;
 exports.switchback = switchback;
 //# sourceMappingURL=index.js.map
