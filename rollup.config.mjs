@@ -8,7 +8,7 @@ export default {
   output: {
     file: 'dist/bundle.js',
     format: 'cjs',
-    sourcemap: true,
+    sourcemap: false,
   },
   plugins: [
     typescript({ compilerOptions: {lib: ["es5", "es6", "dom"], target: "es5"}}),

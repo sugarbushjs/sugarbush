@@ -1,28 +1,24 @@
 'use strict';
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
+function _typeof(obj) {
+  "@babel/helpers - typeof";
 
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  }, _typeof(obj);
+}
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-var __assign = function () {
-  __assign = Object.assign || function __assign(t) {
+var _assign = function __assign() {
+  _assign = Object.assign || function __assign(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
       s = arguments[i];
       for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
     }
     return t;
   };
-  return __assign.apply(this, arguments);
+  return _assign.apply(this, arguments);
 };
 
 // @ts-ignore
@@ -35,7 +31,7 @@ function adaptiveDispatch(options) {
             if (loggingOn) {
                 console.log("".concat(emoji$3, " adaptiveDispatch: ").concat(_key));
             }
-            var _action = __assign(__assign({}, action), { key: _key });
+            var _action = _assign(_assign({}, action), { key: _key });
             _dispatch(_action);
         }
         catch (e) {
@@ -56,7 +52,7 @@ function adaptiveSagaDispatch(options) {
             if (loggingOn) {
                 console.log("".concat(emoji$2, " adaptiveSagaDispatch"));
             }
-            var _action = __assign(__assign({}, action), { key: SAGA_EXTERMINATOR });
+            var _action = _assign(_assign({}, action), { key: SAGA_EXTERMINATOR });
             _dispatch(_action);
         }
         catch (e) {
@@ -79,7 +75,7 @@ function r(n) {
 function t(n) {
   var r;
   return !!n && (function (n) {
-    if (!n || "object" != typeof n) return !1;
+    if (!n || "object" != _typeof(n)) return !1;
     var r = Object.getPrototypeOf(n);
     if (null === r) return !0;
     var t = Object.hasOwnProperty.call(r, "constructor") && r.constructor;
@@ -88,7 +84,7 @@ function t(n) {
 }
 function i(n, r, t) {
   void 0 === t && (t = !1), 0 === o(n) ? (t ? Object.keys : nn)(n).forEach(function (e) {
-    t && "symbol" == typeof e || r(e, n[e], n);
+    t && "symbol" == _typeof(e) || r(e, n[e], n);
   }) : n.forEach(function (t, e) {
     return r(e, t, n);
   });
@@ -136,7 +132,7 @@ function l(n) {
   return Object.create(Object.getPrototypeOf(n), r);
 }
 function d(n, e) {
-  return void 0 === e && (e = !1), y(n) || r(n) || !t(n) || (o(n) > 1 && (n.set = n.add = n.clear = n.delete = h), Object.freeze(n), e && i(n, function (n, r) {
+  return void 0 === e && (e = !1), y(n) || r(n) || !t(n) || (o(n) > 1 && (n.set = n.add = n.clear = n["delete"] = h), Object.freeze(n), e && i(n, function (n, r) {
     return d(r, !0);
   }, !0)), n;
 }
@@ -144,7 +140,7 @@ function h() {
   n(2);
 }
 function y(n) {
-  return null == n || "object" != typeof n || Object.isFrozen(n);
+  return null == n || "object" != _typeof(n) || Object.isFrozen(n);
 }
 function b(r) {
   var t = tn[r];
@@ -283,18 +279,18 @@ function D(n, r) {
 }
 var G,
   U,
-  W = "undefined" != typeof Symbol && "symbol" == typeof Symbol("x"),
+  W = "undefined" != typeof Symbol && "symbol" == _typeof(Symbol("x")),
   X = "undefined" != typeof Map,
   q = "undefined" != typeof Set,
   B = "undefined" != typeof Proxy && void 0 !== Proxy.revocable && "undefined" != typeof Reflect,
-  H = W ? Symbol.for("immer-nothing") : ((G = {})["immer-nothing"] = !0, G),
-  L = W ? Symbol.for("immer-draftable") : "__$immer_draftable",
-  Q = W ? Symbol.for("immer-state") : "__$immer_state",
+  H = W ? Symbol["for"]("immer-nothing") : ((G = {})["immer-nothing"] = !0, G),
+  L = W ? Symbol["for"]("immer-draftable") : "__$immer_draftable",
+  Q = W ? Symbol["for"]("immer-state") : "__$immer_state",
   Y = {
     0: "Illegal state",
     1: "Immer drafts cannot have computed properties",
     2: "This object has been frozen and should not be mutated",
-    3: function (n) {
+    3: function _(n) {
       return "Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? " + n;
     },
     4: "An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",
@@ -308,24 +304,24 @@ var G,
     12: "Object.setPrototypeOf() cannot be used on an Immer draft",
     13: "Immer only supports deleting array indices",
     14: "Immer only supports setting array indices and the 'length' property",
-    15: function (n) {
+    15: function _(n) {
       return "Cannot apply patch, path doesn't resolve: " + n;
     },
     16: 'Sets cannot have "replace" patches.',
-    17: function (n) {
+    17: function _(n) {
       return "Unsupported patch operation: " + n;
     },
-    18: function (n) {
+    18: function _(n) {
       return "The plugin for '" + n + "' has not been loaded into Immer. To enable the plugin, import and call `enable" + n + "()` when initializing your application.";
     },
     20: "Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",
-    21: function (n) {
+    21: function _(n) {
       return "produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '" + n + "'";
     },
-    22: function (n) {
+    22: function _(n) {
       return "'current' expects a draft, got: " + n;
     },
-    23: function (n) {
+    23: function _(n) {
       return "'original' expects a draft, got: " + n;
     },
     24: "Patching reserved attributes like __proto__, prototype and constructor is not allowed"
@@ -342,7 +338,7 @@ var G,
   },
   tn = {},
   en = {
-    get: function (n, r) {
+    get: function get(n, r) {
       if (r === Q) return n;
       var e = p(n);
       if (!u(e, r)) return function (n, r, t) {
@@ -353,13 +349,13 @@ var G,
       var i = e[r];
       return n.I || !t(i) ? i : i === z(n.t, r) ? (E(n), n.o[r] = N(n.A.h, i, n)) : i;
     },
-    has: function (n, r) {
+    has: function has(n, r) {
       return r in p(n);
     },
-    ownKeys: function (n) {
+    ownKeys: function ownKeys(n) {
       return Reflect.ownKeys(p(n));
     },
-    set: function (n, r, t) {
+    set: function set(n, r, t) {
       var e = I(p(n), r);
       if (null == e ? void 0 : e.set) return e.set.call(n.k, t), !0;
       if (!n.P) {
@@ -371,10 +367,10 @@ var G,
       }
       return n.o[r] === t && (void 0 !== t || r in n.o) || Number.isNaN(t) && Number.isNaN(n.o[r]) || (n.o[r] = t, n.R[r] = !0), !0;
     },
-    deleteProperty: function (n, r) {
+    deleteProperty: function deleteProperty(n, r) {
       return void 0 !== z(n.t, r) || r in n.t ? (n.R[r] = !1, E(n), k(n)) : delete n.R[r], n.o && delete n.o[r], !0;
     },
-    getOwnPropertyDescriptor: function (n, r) {
+    getOwnPropertyDescriptor: function getOwnPropertyDescriptor(n, r) {
       var t = p(n),
         e = Reflect.getOwnPropertyDescriptor(t, r);
       return e ? {
@@ -384,13 +380,13 @@ var G,
         value: t[r]
       } : e;
     },
-    defineProperty: function () {
+    defineProperty: function defineProperty() {
       n(11);
     },
-    getPrototypeOf: function (n) {
+    getPrototypeOf: function getPrototypeOf(n) {
       return Object.getPrototypeOf(n.t);
     },
-    setPrototypeOf: function () {
+    setPrototypeOf: function setPrototypeOf() {
       n(12);
     }
   },
@@ -438,7 +434,7 @@ var un = function () {
             throw O(c), n;
           }) : (j(c, o), P(f, c));
         }
-        if (!r || "object" != typeof r) {
+        if (!r || "object" != _typeof(r)) {
           if (void 0 === (f = i(r)) && (f = r), f === H && (f = void 0), e.D && d(f, !0), o) {
             var p = [],
               l = [];
@@ -550,7 +546,7 @@ function switchback(reducers, verbose) {
                 console.log("".concat(emoji$1, " running switchback: ").concat(action.type));
             }
             try {
-                nextState = __assign({}, state);
+                nextState = _assign({}, state);
                 /**
                  * If the dispatched saga does NOT have associated reducer
                  * then just return the current store state - this comes
@@ -645,7 +641,7 @@ function configureAdaptiveStore(options) {
     var _dispatch = (options || {}).dispatch;
     var dispatch = function (key) {
         return function _hammerHead(action) {
-            var _a = __assign(__assign({}, action), { key: key });
+            var _a = _assign(_assign({}, action), { key: key });
             try {
                 _dispatch(_a);
             }
@@ -656,7 +652,7 @@ function configureAdaptiveStore(options) {
     };
     var dispatchSaga = function () {
         return function _bravo(action) {
-            var _a = __assign(__assign({}, action), { key: SAGA_EXTERMINATOR });
+            var _a = _assign(_assign({}, action), { key: SAGA_EXTERMINATOR });
             try {
                 _dispatch(_a);
             }
@@ -675,4 +671,3 @@ exports.adaptiveDispatch = adaptiveDispatch;
 exports.adaptiveSagaDispatch = adaptiveSagaDispatch;
 exports.configureAdaptiveStore = configureAdaptiveStore;
 exports.switchback = switchback;
-//# sourceMappingURL=bundle.js.map
