@@ -13,7 +13,7 @@ the dispatched action type. Sugarbush also has accompanied components such as
 [sugarbush-saga](https://github.com/sugarbushjs/sugarbush-saga)
 
 
-
+\
 ## Installation
 ```
 Minimum Requirements: React 16.8
@@ -175,64 +175,9 @@ export const CounterDispatch = () => adaptiveDispatch(
 
 Using the CounterDispatch in a React page is the same as listed above in the `configureAdaptiveStore` section.
 
-## Saga
-
-When dispatching Saga actions, the combinedReducers will process all the reducers. With `dispatchSaga` from `configureAdaptiveStore`
-or `adaptiveSagaDispatch` this will not occur. The dispatchSaga and adaptiveSagaDispatch have one parameter, dispatch,
-of type Redux dispatch. Internally, a key is assigned to the dispatch, indicating switchback to skip
-the processing of reducers.
-
-
-> **Note**: This is only for saga actions with no associated reducers action type.
-
-### dispatchSaga
-```js
-import { adpStore } from '../components/App'
-
-export const sagaDispatch = () => adpStore.dispatchSaga()
-```
-
-### adaptiveSagaDispatch
-```js
-import { store } from '../components/App/store'
-import { adaptiveSagaDispatch } from 'sugarbush'
-
-export const sagaAdpDispatch = () => adaptiveSagaDispatch({dispatch: store.dispatch, versobe: false })
-```
-> **Note**: verbose is optional and is true by default, but will be set to false in a production environment.
-
-## sbPut
-
-When using the Saga Put side effect, all the reducers are processed again while using combinedReducers. To run only the
-corresponding reducer for the Saga Put effect, use the sbPut side effect from Sugarbush. This wraps the Saga Put effect
-and adds the reducer’s key to the effect.
-
-sbPut take two parameters. The first is an action type, of type string, and payload of any.
-
-```js
-import { takeEvery } from 'redux-saga/effects'
-import { sbPut } from 'sugarbush'
-import { SystemActionEnum } from '../actions/system-actions'
-
-/** Using the sugarbush effect of sbPut to set the key*/
-const _put = sbPut('SystemState')
-
-export function* watchFetchSystemSettings() {
-  yield takeEvery(SystemActionEnum.FETCH_SYSTEM_THEME, fetchSetSystemTheme)
-}
-
-function* fetchSetSystemTheme() {
-  /** Using the sugarbush effect of sbPut */
-  yield _put(SystemActionEnum.SET_SYSTEM_THEME, 'GREEN')
-}
-```
 \
-Internally the sbPut creates an action type with a key and calls the saga PUT:
-
-```js
-const _action:IAction = ({type: type, payload: payload, key: key})
-yield put(_action)
-```
+**Sugarbush Saga** includes `adaptiveSagaDispatch` and `sbPut` (saga effect). For more information goto
+[sugarbush-saga](https://github.com/sugarbushjs/sugarbush-saga)
 
 ## Examples:
 * [switchback-example-classic](https://github.com/sugarbushjs/switchback-example-classic)

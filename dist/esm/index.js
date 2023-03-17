@@ -584,7 +584,7 @@ var emoji$1 = String.fromCodePoint('0x26F7');
  *
  * */
 function switchback(reducers, options) {
-    var _a = options || { verbose: true, sagaBypass: '' }, verbose = _a.verbose, sagaBypass = _a.sagaBypass;
+    var _a = options || { verbose: true, sagaBypass: '' }, _b = _a.verbose, verbose = _b === void 0 ? true : _b, _c = _a.sagaBypass, sagaBypass = _c === void 0 ? '' : _c;
     var reducerKeys = Object.keys(reducers);
     var loggingOn = verbose && "development" !== 'production';
     return function _lowerFIS(state, action) {
@@ -613,7 +613,7 @@ function switchback(reducers, options) {
                  *  */
                 if (id === sagaBypass && id.trim() !== '') {
                     if (loggingOn) {
-                        console.log("".concat(emoji$1, " SAGA Escape Hatch!!! ").concat(action.type));
+                        console.log("".concat(emoji$1, " SAGA Bypass!!! ").concat(action.type));
                     }
                     return state;
                 }

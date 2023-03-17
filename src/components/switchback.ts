@@ -68,7 +68,7 @@ export function switchback<V extends boolean | undefined, S extends string | und
   reducers: ReducersMapObject,
   options?: ISwitchbackOpt<V, S>,
 ) {
-  const { verbose, sagaBypass } = options || { verbose: true, sagaBypass: '' }
+  const { verbose = true, sagaBypass = '' } = options || { verbose: true, sagaBypass: '' }
   const reducerKeys = Object.keys(reducers)
   const loggingOn = verbose && process.env.NODE_ENV !== 'production'
 
@@ -101,7 +101,7 @@ export function switchback<V extends boolean | undefined, S extends string | und
          *  */
         if (id === sagaBypass && id.trim() !== '') {
           if (loggingOn) {
-            console.log(`${emoji} SAGA Escape Hatch!!! ${action.type}`)
+            console.log(`${emoji} SAGA Bypass!!! ${action.type}`)
           }
           return state
         }
