@@ -3,13 +3,6 @@ import { switchback } from './components/switchback'
 import { configureAdaptiveStore } from './components/configureAdaptiveStore'
 import { IAdpStoreOptions } from './types/storeTypes'
 import { IAdpDispatchOptions } from './types/disaptchTypes'
-import { SAGA_EXTERMINATOR } from './types/storeTypes'
+import { ISwitchbackOpt } from './types/switchbackTypes'
 
-export {
-  adaptiveDispatch,
-  switchback,
-  configureAdaptiveStore,
-  IAdpDispatchOptions,
-  IAdpStoreOptions,
-  SAGA_EXTERMINATOR,
-}
+export { adaptiveDispatch, switchback, configureAdaptiveStore, ISwitchbackOpt, IAdpDispatchOptions, IAdpStoreOptions }

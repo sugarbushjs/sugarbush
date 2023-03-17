@@ -28,6 +28,36 @@ var __assign = function() {
 
 // @ts-ignore
 var emoji$2 = String.fromCodePoint('0X1F6A1');
+/**
+ * @description
+ *
+ * @param options dispatch, key, verbose
+ * <p/>
+ * dispath of type Redux Dispatch
+ * <p/>
+ * key of type string used with switchback to process only the reduces that represents the key
+ * <p/>
+ * verbose of type boolean and output information to the console windows. This is turned off in production
+ *
+ * @example
+ *  const systemDispatch = () => adaptiveDispatch({
+ *    dispatch: store.dispatch,
+ *    key: 'SystemState',
+ *    verbose: false
+ *  })
+ *
+ * @example
+ *  const systemDispatch = () => adaptiveDispatch({
+ *    dispatch: store.dispatch,
+ *    verbose: false
+ *  })
+ *
+ * @example
+ *  const systemDispatch = () => adaptiveDispatch({
+ *    dispatch: store.dispatch
+ *  })
+ *
+ * */
 function adaptiveDispatch(options) {
     var _a = options || {}, _dispatch = _a.dispatch, _key = _a.key, _b = _a.verbose, _verbose = _b === void 0 ? true : _b;
     var loggingOn = _verbose && "development" !== 'production';
@@ -494,8 +524,7 @@ var un = function () {
   an.createDraft.bind(an);
   an.finishDraft.bind(an);
 
-var SAGA_EXTERMINATOR = '@@sb-saga!';
-
+//import { SAGA_EXTERMINATOR } from '../types/storeTypes'
 // @ts-ignore
 var emoji$1 = String.fromCodePoint('0x26F7');
 /**
@@ -514,14 +543,50 @@ var emoji$1 = String.fromCodePoint('0x26F7');
  *   initial state if the state passed to them was undefined, and the current
  *   state for any unrecognized action. (official redux documentation)
  *
- * @param verbose is optional. This will output information to the
- *  console window. This is turned off in production env.
+ * @param options for switchback options. All options are optional and include
+ *  verbose (boolean) will output information to the console window, sagaBypass (string)
+ *  will prevent the processing of any reducer. See ISwitchbackOpt for more inforamtmion
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { sagaBypass: '@@SAGABYPASS!', verbose: false})
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { verbose: false, sagaBypass: '@@SAGABYPASS!'})
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { verbose: false })
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { sagaBypass: '@@SAGABYPASS!'})
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    })
  *
  * @returns State object representing the reducers
  *
  * */
-function switchback(reducers, verbose) {
-    if (verbose === void 0) { verbose = true; }
+function switchback(reducers, options) {
+    var _a = options || { verbose: true, sagaBypass: '' }, verbose = _a.verbose, sagaBypass = _a.sagaBypass;
     var reducerKeys = Object.keys(reducers);
     var loggingOn = verbose && "development" !== 'production';
     return function _lowerFIS(state, action) {
@@ -542,18 +607,17 @@ function switchback(reducers, verbose) {
                 console.log("".concat(emoji$1, " running switchback: ").concat(action.type));
             }
             try {
-                nextState = __assign({}, state);
                 /**
                  * If the dispatched saga does NOT have associated reducer
                  * then just return the current store state - this comes
                  * form either the configureAdaptiveStore.dispatchSaga or
                  * adaptiveSagaDispatch
                  *  */
-                if (id === SAGA_EXTERMINATOR) {
+                if (id === sagaBypass && id.trim() !== '') {
                     if (loggingOn) {
                         console.log("".concat(emoji$1, " SAGA Escape Hatch!!! ").concat(action.type));
                     }
-                    return nextState;
+                    return state;
                 }
                 var reducer_1 = reducers[id];
                 if (reducer_1) {
@@ -625,13 +689,34 @@ var _buildStateTree = function (reducers, reducerKeys, action) {
 var emoji = String.fromCodePoint('0X1F3C2');
 /**
  *
- * @description This creates a store that contains createDispatch. The createDispatch function
- *    creates a redux dispatch that takes a key which is used with the switchback component. All
- *    warnings are suppressed in Production environment
+ * @description This creates a store that contains two methods: dispatch and dispatchSaga. The
+ *  configureAdaptiveStore takes one parameter of type Redux Dispatch.
  *
- * @param {IAdpStoreOptions} options
- * @param { Store } store
- * @param { boolean } suppressWarnings
+ *  <p/>
+ *  <p>The dispatch function creates a Redux dispatch that takes a key which is used with switchback.<p/>
+ *  <p/>
+ *  <p>The dispatchSaga function creates a Redux dispatch that takes a key which is used to
+ *  bypass switchback. The same key must be added to switchback options (sagaBypass). See
+ *  switch for more information<p/>
+ *
+ * @param options take dispatch of type Redux Dispatch
+ *
+ * @example
+ **
+ *  export const adpStore = configureAdaptiveStore({
+ *    dispatch: store.dispatch
+ *  })
+ *
+ * @example
+ *  export const createAdpStore = () => {
+ *   return configureAdaptiveStore({
+ *     dispatch: store.dispatch,
+ *   })
+ * }
+ *
+ * <p/>
+ * import { configureStore } from '@reduxjs/toolkit'*
+ * => store from configureStore
  */
 function configureAdaptiveStore(options) {
     var _dispatch = (options || {}).dispatch;
@@ -646,9 +731,9 @@ function configureAdaptiveStore(options) {
             }
         };
     };
-    var dispatchSaga = function () {
+    var dispatchSaga = function (sagaKey) {
         return function _bravo(action) {
-            var _a = __assign(__assign({}, action), { key: SAGA_EXTERMINATOR });
+            var _a = __assign(__assign({}, action), { key: sagaKey });
             try {
                 _dispatch(_a);
             }

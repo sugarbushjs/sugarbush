@@ -2,11 +2,21 @@
 import { createAdpStore, AppStore } from './mocks/mock-store'
 
 describe('configureAdaptiveStore Test', () => {
-  it('use createDispatch from Adaptive Store', () => {
+  it('test default theme', () => {
+    const adpStore = createAdpStore()
+    const dispatch = adpStore.dispatch('SystemState')
+
+    dispatch({ type: 'FETCH_SYSTEM_THEME' })
+    const state = AppStore.getState()
+    expect(state.SystemState.theme).toEqual('light')
+  })
+
+  it('test set default theme', () => {
     const adpStore = createAdpStore()
     const dispatch = adpStore.dispatch('SystemState')
 
     dispatch({ type: 'FETCH_SYSTEM_THEME', payload: 'green' })
-    expect(AppStore.getState().theme).toEqual('green')
+    const state = AppStore.getState()
+    expect(state.SystemState.theme).toEqual('green')
   })
 })

@@ -1,6 +1,7 @@
 import { produce } from 'immer'
 import { ReducersMapObject, StateFromReducersMapObject, AnyAction } from 'redux'
-import { SAGA_EXTERMINATOR } from '../types/storeTypes'
+import { ISwitchbackOpt } from '../types/switchbackTypes'
+//import { SAGA_EXTERMINATOR } from '../types/storeTypes'
 
 // @ts-ignore
 const emoji = String.fromCodePoint('0x26F7')
@@ -21,13 +22,53 @@ const emoji = String.fromCodePoint('0x26F7')
  *   initial state if the state passed to them was undefined, and the current
  *   state for any unrecognized action. (official redux documentation)
  *
- * @param verbose is optional. This will output information to the
- *  console window. This is turned off in production env.
+ * @param options for switchback options. All options are optional and include
+ *  verbose (boolean) will output information to the console window, sagaBypass (string)
+ *  will prevent the processing of any reducer. See ISwitchbackOpt for more inforamtmion
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { sagaBypass: '@@SAGABYPASS!', verbose: false})
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { verbose: false, sagaBypass: '@@SAGABYPASS!'})
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { verbose: false })
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { sagaBypass: '@@SAGABYPASS!'})
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    })
  *
  * @returns State object representing the reducers
  *
  * */
-export function switchback(reducers: ReducersMapObject, verbose = true) {
+export function switchback<V extends boolean | undefined, S extends string | undefined>(
+  reducers: ReducersMapObject,
+  options?: ISwitchbackOpt<V, S>,
+) {
+  const { verbose, sagaBypass } = options || { verbose: true, sagaBypass: '' }
   const reducerKeys = Object.keys(reducers)
   const loggingOn = verbose && process.env.NODE_ENV !== 'production'
 
@@ -52,18 +93,17 @@ export function switchback(reducers: ReducersMapObject, verbose = true) {
       }
 
       try {
-        nextState = { ...state }
         /**
          * If the dispatched saga does NOT have associated reducer
          * then just return the current store state - this comes
          * form either the configureAdaptiveStore.dispatchSaga or
          * adaptiveSagaDispatch
          *  */
-        if (id === SAGA_EXTERMINATOR) {
+        if (id === sagaBypass && id.trim() !== '') {
           if (loggingOn) {
             console.log(`${emoji} SAGA Escape Hatch!!! ${action.type}`)
           }
-          return nextState
+          return state
         }
 
         const reducer = reducers[id]

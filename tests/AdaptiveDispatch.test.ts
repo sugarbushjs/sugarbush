@@ -1,23 +1,24 @@
 // @ts-ignore
 import { AppStore } from './mocks/mock-store'
+import { SystemActionEnum } from './mocks/system-reducer'
 import { adaptiveDispatch } from '../src'
 
 describe('Adaptive Dispatch', () => {
   it('dispatch with key ', () => {
-    const systemDispatch = () => adaptiveDispatch({ dispatch: AppStore.dispatch, key: 'SystemState' })
+    const systemDispatch = () => adaptiveDispatch({ dispatch: AppStore.dispatch, key: 'SystemState', verbose: false })
     const dispatch = systemDispatch()
-    dispatch({ type: 'FETCH_SYSTEM_THEME', payload: 'blue' })
+    dispatch({ type: SystemActionEnum.FETCH_SYSTEM_THEME, payload: 'blue' })
 
-    const theme = AppStore.getState().theme
-    expect(theme).toEqual('blue')
+    const state = AppStore.getState()
+    expect(state.SystemState.theme).toEqual('blue')
   })
 
   it('dispatch with No key', () => {
-    const systemDispatch = () => adaptiveDispatch({ dispatch: AppStore.dispatch })
+    const systemDispatch = () => adaptiveDispatch({ dispatch: AppStore.dispatch, verbose: false })
     const _dispatch = systemDispatch()
-    _dispatch({ type: 'FETCH_SYSTEM_THEME', payload: 'yellow' })
+    _dispatch({ type: SystemActionEnum.FETCH_SYSTEM_THEME, payload: 'yellow' })
 
-    const theme = AppStore.getState().theme
-    expect(theme).toEqual('yellow')
+    const state = AppStore.getState()
+    expect(state.SystemState.theme).toEqual('yellow')
   })
 })

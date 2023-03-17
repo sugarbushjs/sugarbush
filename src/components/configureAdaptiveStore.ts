@@ -1,17 +1,38 @@
 import { AnyAction, Dispatch } from 'redux'
-import { IAdpStoreOptions, SAGA_EXTERMINATOR } from '../types/storeTypes'
+import { IAdpStoreOptions } from '../types/storeTypes'
 // @ts-ignore
 const emoji = String.fromCodePoint('0X1F3C2')
 
 /**
  *
- * @description This creates a store that contains createDispatch. The createDispatch function
- *    creates a redux dispatch that takes a key which is used with the switchback component. All
- *    warnings are suppressed in Production environment
+ * @description This creates a store that contains two methods: dispatch and dispatchSaga. The
+ *  configureAdaptiveStore takes one parameter of type Redux Dispatch.
  *
- * @param {IAdpStoreOptions} options
- * @param { Store } store
- * @param { boolean } suppressWarnings
+ *  <p/>
+ *  <p>The dispatch function creates a Redux dispatch that takes a key which is used with switchback.<p/>
+ *  <p/>
+ *  <p>The dispatchSaga function creates a Redux dispatch that takes a key which is used to
+ *  bypass switchback. The same key must be added to switchback options (sagaBypass). See
+ *  switch for more information<p/>
+ *
+ * @param options take dispatch of type Redux Dispatch
+ *
+ * @example
+ **
+ *  export const adpStore = configureAdaptiveStore({
+ *    dispatch: store.dispatch
+ *  })
+ *
+ * @example
+ *  export const createAdpStore = () => {
+ *   return configureAdaptiveStore({
+ *     dispatch: store.dispatch,
+ *   })
+ * }
+ *
+ * <p/>
+ * import { configureStore } from '@reduxjs/toolkit'*
+ * => store from configureStore
  */
 export function configureAdaptiveStore<D extends Dispatch>(options: IAdpStoreOptions<D>) {
   const { dispatch: _dispatch } = options || {}
@@ -27,9 +48,9 @@ export function configureAdaptiveStore<D extends Dispatch>(options: IAdpStoreOpt
     }
   }
 
-  const dispatchSaga = () => {
+  const dispatchSaga = (sagaKey: string) => {
     return function _bravo(action: AnyAction) {
-      const _a = { ...action, key: SAGA_EXTERMINATOR }
+      const _a = { ...action, key: sagaKey }
       try {
         _dispatch(_a)
       } catch (e) {

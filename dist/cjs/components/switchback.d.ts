@@ -1,4 +1,5 @@
 import { ReducersMapObject, AnyAction } from 'redux';
+import { ISwitchbackOpt } from '../types/switchbackTypes';
 /**
  * @description: Switchback will call only one child reducer if a key is included
  * in the action: ({type:'SET_THEME', payload:'GEEN', key: 'SystemState'}) and
@@ -15,12 +16,48 @@ import { ReducersMapObject, AnyAction } from 'redux';
  *   initial state if the state passed to them was undefined, and the current
  *   state for any unrecognized action. (official redux documentation)
  *
- * @param verbose is optional. This will output information to the
- *  console window. This is turned off in production env.
+ * @param options for switchback options. All options are optional and include
+ *  verbose (boolean) will output information to the console window, sagaBypass (string)
+ *  will prevent the processing of any reducer. See ISwitchbackOpt for more inforamtmion
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { sagaBypass: '@@SAGABYPASS!', verbose: false})
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { verbose: false, sagaBypass: '@@SAGABYPASS!'})
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { verbose: false })
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    }, { sagaBypass: '@@SAGABYPASS!'})
+ *
+ *  @example
+ *    const reducers = switchback({
+ *      SystemState,
+ *      CounterState,
+ *      StatusState,
+ *    })
  *
  * @returns State object representing the reducers
  *
  * */
-export declare function switchback(reducers: ReducersMapObject, verbose?: boolean): (state: {
+export declare function switchback<V extends boolean | undefined, S extends string | undefined>(reducers: ReducersMapObject, options?: ISwitchbackOpt<V, S>): (state: {
     [x: string]: any;
 } | undefined, action: AnyAction) => any;
