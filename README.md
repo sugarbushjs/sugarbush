@@ -5,15 +5,15 @@
 
 **Sugarbush** is a performance enhancer for your react-redux application by replacing the Redux
 <u>combinedReducers</u> with `switchback`. Switchback will only run the corresponding reducer that matches
-the dispatched action type. Sugarbush also has accompanied components such as
+the dispatched action type. Sugarbush also has accompanied components
 `confingureAdaptiveStrore`, and `adaptiveDispatch`.
 
 \
-**Sugarbush Saga** includes `adaptiveSagaDispatch` and `sbPut` (saga effect). For more information goto
-[sugarbush-saga](https://github.com/sugarbushjs/sugarbush-saga)
+**Sugarbush Saga** includes `adaptiveSagaDispatch` and `sbPut` (saga effect). For more information go to
+[sugarbush-saga](https://www.npmjs.com/package/sugarbush-saga)
 
 
-\
+
 ## Installation
 ```
 Minimum Requirements: React 16.8
@@ -28,7 +28,9 @@ yarn add sugarbush
 
 ### **Switchback**
 
-With most react–redux applications, we use the Redux combinedReducers to process any dispatch actions to update the store
+Switchback replaces the current combinedReducers and only processes the reducer containing the associated dispatch action type.
+
+With most react–redux applications, we use the Redux combinedReducers to process dispatch actions to update the store
 state. The combinedReducers will perform a linear search (top to bottom) on all the files listed within the combinedReducers.
 Any dispatch action type found within a reducer, the state is mutated and passed back to the combinedReducers. When a reducer
 does not contain the dispatch action type, it must return its default or current state. For example, if the first reducer
@@ -36,9 +38,6 @@ within the combinedReducers contains the dispatch action type, the reducer will 
 the combinedReducers must continue to iterate over the remaining reducers to get their current state. This unnecessary looping
 process can impact the application's performance. Also, if you dispatch an action type that does not have a corresponding reducer,
 such as a **Saga** action, all the reducers are processed again with the combinedReducers.
-
-Switchback replaces the current combinedReducers and only processes the reducer containing the associated dispatch action type.
-The implementation of switchback is shown below.
 
 ```js
 import { switchback } from 'surgarbush'
@@ -54,8 +53,44 @@ const reducers = switchback({
   UserState,
 })
 ```
-> **Note**: switchback has an optional parameter, verbose (true by default), which will to output information to console window.
-> This is turned off in production environment
+> **Note**: switchback has two optional parameters. The first `verbose` (true by default) will output information 
+> to the console window. This parameter will be set to false in production environments. The second is `sagaBypass`. 
+> Please read more about sagaBypass at  [sugarbush-saga](https://www.npmjs.com/package/sugarbush-saga). 
+
+\
+More setup examples of switchback with optional parameters:
+```js
+
+  //example
+   const reducers = switchback({
+     SystemState,
+     CounterState,
+     StatusState,
+   }, { sagaBypass: '@@SAGABYPASS!', verbose: false})
+
+  //example
+   const reducers = switchback({
+     SystemState,
+     CounterState,
+     StatusState,
+   }, { verbose: false, sagaBypass: '@@SAGABYPASS!'})
+
+  //example
+  const reducers = switchback({
+    SystemState,
+    CounterState,
+    StatusState,
+  }, { verbose: false })
+
+  //example
+  const reducers = switchback({
+    SystemState,
+    CounterState,
+    StatusState,
+  }, { sagaBypass: '@@SAGABYPASS!'})
+
+```
+
 
 \
 According to Redux, all reduces must return state. Reducers must return state because combinedReducers creates an empty
@@ -63,7 +98,7 @@ state object and then iterates over all the reducers returning a reducer's updat
 Switchback first creates a new state object from the current store state and only processes the reducer corresponding to
 the action key.
 
-> **Note**: All reducers need to return state. This is needed to build the state tree during initialization fo the
+> **Note**: All reducers need to return state. This is needed to build the state tree during initialization for the
 > application
 
 \
@@ -73,7 +108,7 @@ dispatch({type: 'SET_THEME', payload: 'green', key: 'SystemState'})
 ```
 
 The key represents the alias name of the reducer listed within switchback. For example, when importing the system-reducers.ts
-file, the file is assigned an alias of SystemState. Then SystemState is added within the switchback list. The key for the
+file, the file is assigned an alias of SystemState. Then SystemState is added to the switchback list. The key for the
 system-reducer would be SystemState.
 
 \
@@ -117,14 +152,14 @@ const App = () => {
 export default App
 ```
 
-> **Note**: The store only takes one parameter of type dispatch.
+> **Note**: The store only takes one parameter of type Redux Dispatch.
 
 \
 The `configureAdaptiveStore` contains two methods, **dispatch**, and **dispatchSaga**. Please read more about
-[sugarbush-saga](https://github.com/sugarbushjs/sugarbush-saga)
+[sugarbush-saga](https://www.npmjs.com/package/sugarbush-saga)
 
 \
-The dispatch method will create a new dispatch with a key. `Switchback` will use the key to process the
+The configureAdaptiveStore dispatch method will allow `Switchback` to use the key to process the
 corresponding reducer.
 
 ```js
@@ -157,9 +192,9 @@ useEffect(() => {
 
 ### adaptiveDispatch
 The `adaptiveDispatch` can be used instead of creating a `configureAdaptiveStore`. The syntax is more verbose and
-takes three parameters. The first parameter, dispatch, is of type Redux dispatch, the second, key, is of type string,
-and the third, verbose (which is optional), of type Boolean. With the verbose parameter set to true, information
-will be written out to the console window. This is true by default and will be set to false in a production environment.
+takes three parameters. The first parameter, dispatch, is of type Redux dispatch, the second key, is of type string,
+and the third, verbose (which is optional), of type Boolean. Information will be written out to the console window 
+with the verbose parameter set to true. Verbose is true by default and will be set to false in a production environment.
 ```js
 
 import { store } from '../components/App/store'
@@ -176,8 +211,8 @@ export const CounterDispatch = () => adaptiveDispatch(
 Using the CounterDispatch in a React page is the same as listed above in the `configureAdaptiveStore` section.
 
 \
-**Sugarbush Saga** includes `adaptiveSagaDispatch` and `sbPut` (saga effect). For more information goto
-[sugarbush-saga](https://github.com/sugarbushjs/sugarbush-saga)
+**Sugarbush Saga** includes `adaptiveSagaDispatch` and `sbPut` (saga effect). For more information go to
+[sugarbush-saga](https://www.npmjs.com/package/sugarbush-saga)
 
 ## Examples:
 * [switchback-example-classic](https://github.com/sugarbushjs/switchback-example-classic)

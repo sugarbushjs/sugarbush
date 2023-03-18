@@ -15,8 +15,8 @@ describe('Adaptive Dispatch', () => {
 
   it('dispatch with No key', () => {
     const systemDispatch = () => adaptiveDispatch({ dispatch: AppStore.dispatch, verbose: false })
-    const _dispatch = systemDispatch()
-    _dispatch({ type: SystemActionEnum.FETCH_SYSTEM_THEME, payload: 'yellow' })
+    const dispatch = systemDispatch()
+    dispatch({ type: SystemActionEnum.FETCH_SYSTEM_THEME, payload: 'yellow' })
 
     const state = AppStore.getState()
     expect(state.SystemState.theme).toEqual('yellow')

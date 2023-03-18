@@ -8,7 +8,7 @@ import SystemState from './system-reducer'
 
 export const SAGA_BYPASS = '@@SAGA-BYPASS!'
 export const AppStore = configureStore({
-  reducer: {SystemState, CounterState}
+  reducer: { SystemState, CounterState },
 })
 
 export const createAdpStore = () => {
@@ -17,10 +17,12 @@ export const createAdpStore = () => {
   })
 }
 
-export const mockSwitchback = switchback({
-  SystemState,
-  CounterState
-}, { verbose: false, sagaBypass: SAGA_BYPASS})
+export const mockSwitchback = switchback(
+  {
+    SystemState,
+    CounterState,
+  },
+  { verbose: false, sagaBypass: SAGA_BYPASS },
+)
 
 export default createAdpStore
-
