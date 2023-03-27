@@ -48,19 +48,7 @@ export function configureAdaptiveStore<D extends Dispatch>(options: IAdpStoreOpt
     }
   }
 
-  const dispatchSaga = (sagaKey: string) => {
-    return function _bravo(action: AnyAction) {
-      const _a = { ...action, key: sagaKey }
-      try {
-        _dispatch(_a)
-      } catch (e) {
-        throw new Error(`${emoji} Error dispatching Saga from createAdaptive: Error => ${e}`)
-      }
-    }
-  }
-
   return {
     dispatch,
-    dispatchSaga,
   }
 }
