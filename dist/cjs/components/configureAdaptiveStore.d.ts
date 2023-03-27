@@ -33,5 +33,4 @@ import { IAdpStoreOptions } from '../types/storeTypes';
  */
 export declare function configureAdaptiveStore<D extends Dispatch>(options: IAdpStoreOptions<D>): {
     dispatch: (key: string) => (action: AnyAction) => void;
-    dispatchSaga: (sagaKey: string) => (action: AnyAction) => void;
 };

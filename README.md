@@ -155,8 +155,7 @@ export default App
 > **Note**: The store only takes one parameter of type Redux Dispatch.
 
 \
-The `configureAdaptiveStore` contains two methods, **dispatch**, and **dispatchSaga**. Please read more about
-[sugarbush-saga](https://www.npmjs.com/package/sugarbush-saga)
+The `configureAdaptiveStore` contains one method called  **dispatch**
 
 \
 The configureAdaptiveStore dispatch method will allow `Switchback` to use the key to process the

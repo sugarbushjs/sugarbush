@@ -729,20 +729,8 @@ function configureAdaptiveStore(options) {
             }
         };
     };
-    var dispatchSaga = function (sagaKey) {
-        return function _bravo(action) {
-            var _a = __assign(__assign({}, action), { key: sagaKey });
-            try {
-                _dispatch(_a);
-            }
-            catch (e) {
-                throw new Error("".concat(emoji, " Error dispatching Saga from createAdaptive: Error => ").concat(e));
-            }
-        };
-    };
     return {
         dispatch: dispatch,
-        dispatchSaga: dispatchSaga,
     };
 }
 
