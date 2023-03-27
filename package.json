@@ -1,7 +1,7 @@
 {
   "name": "sugarbush",
   "author": "Steven Wickers <StevenWickers@gmail.com> (https://www.linkedin.com/in/stevenwickers)",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Sugarbush is a performance enhancer for your react-redux application by replacing the Redux combinedReducers.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
